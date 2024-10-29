@@ -15,35 +15,43 @@ l = np.linspace(0, 0.000003, 1000)
 def blackbody(T):
     return ((((8*np.pi*h*c)/(l**5))*(1/((np.e**((h*c)/(k*T*l)))-1))))
 
+
 xdata = 4000
 ydata = blackbody(xdata)
 
-# set up a figure 
-fig, ax = plt.subplots()
-ax.set_xlim(0, 2*np.pi)
-ax.set_ylim(0, 500000)
-
 # plot the data and return the line object
+fig, ax = plt.subplots()
 ln, = plt.plot(lm, ydata, "r-", label=xdata)
 
+# set up a figure
+
+
+def init():
+    ax.set_xlim(0, 2*np.pi)
+    ax.set_ylim(0, 1500000)
+    return ln
+
+
+legend = plt.legend(loc=1)  # Define legend objects
+
+
 def update(frame):
-    ydata = blackbody(xdata+frame)
-    ln.set_data(lm, ydata, "r--")
-    ln.set_label(xdata+frame)
+    ln.set_data(lm, blackbody(xdata+frame))
+    # Update label each at frame
+    legend.get_texts()[0].set_text(str(round(xdata+frame))+'K')
     return ln,
+
 
 # create an animation by passing the figure, the function that will get updated,
 # and the argument to the function (frames)
-ani = FuncAnimation(fig, update, frames=np.linspace(0, 2000, 5),
-                    blit=True)
+ani = FuncAnimation(fig, update, frames=np.linspace(
+    0, 2000, 5), init_func=init, interval=1000)
 
 # add axis labels
 plt.xlabel("Wavelength (micrometers)")
 plt.ylabel("B (J/m^4)")
 
-# add a legend
-plt.legend()
+# show the plot
 plt.show()
 
-plt.show()
-#ani.save("wave.mp4")
+# ani.save("wave.mp4")
