@@ -18,7 +18,7 @@ def blackbody(T):
 xdata = 4000
 ydata = blackbody(xdata)
 
-# set up a figure
+# set up a figure 
 fig, ax = plt.subplots()
 ax.set_xlim(0, 2*np.pi)
 ax.set_ylim(0, 500000)
